@@ -1,0 +1,25 @@
+/* mobile CSS */
+
+@media (max-width: 480px) {
+  .sidenav {
+    padding-top: 15px;
+  }
+  .sidenav a {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 767px) {
+}
+
+/* Tab CSS */
+@media (min-width: 768px) and (max-width: 991px) {
+}
+
+/* Small Screen Desktop */
+@media (min-width: 992px) and (max-width: 1024px) {
+}
+
+/* Screen Desktop */
+@media (max-width: 1280px) {
+}
