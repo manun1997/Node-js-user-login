@@ -173,8 +173,17 @@ select {
   margin: 0px 0px 0px 120px;
 }
 
+/* .body_css {
+  position: relative;
+} */
 .main_card_css {
   position: absolute;
   left: 35%;
   top: 20px;
+}
+
+.login_card_css {
+  height: 90px;
+  width: 90px;
+  margin: 0px 0px 0px 97px;
 }
