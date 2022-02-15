@@ -8,8 +8,11 @@ const bcrypt = require("bcrypt");
 const passport = require("passport");
 const flash = require("express-flash");
 const session = require("express-session");
-
+const mysql = require("mysql");
+const methodoverride = require("method-override");
 const initializePassport = require("./passport-config");
+const mysqli = require("mysql");
+const con = require("./database");
 initializePassport(
   passport,
   (email) => users.find((user) => user.email === email),
@@ -18,8 +21,8 @@ initializePassport(
 
 const users = [];
 app.use("/public", express.static(__dirname + "/public"));
+app.set("view engine", "ejs");
 
-app.set("view-engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
 app.use(flash());
 app.use(
@@ -31,25 +34,33 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(methodoverride("_method"));
 
-app.get("/", (req, res) => {
+app.get("/", checkAuthenticated, (req, res) => {
   req.session.username = req.user.name;
   console.log(req.session);
   res.render("index.ejs", { username: req.session.username });
 });
 
-app.get("/dashboard", (req, res) => {
+app.get("/database", (req, res) => {});
+
+app.get("/dashboard", checkAuthenticated, (req, res) => {
   console.log(req.session);
   res.render("dashboard.ejs", { username: req.session.username });
 });
 
-app.get("/login", (req, res) => {
+app.get("/login", checkNotAuthenticated, (req, res) => {
   res.render("login.ejs");
 });
 
+app.delete("/logout", (req, res) => {
+  req.logOut();
+  req.session.destroy();
+  res.redirect("/login");
+});
 app.post(
   "/login",
-
+  checkNotAuthenticated,
   passport.authenticate("local", {
     successRedirect: "/",
     failureRedirect: "/login",
@@ -57,11 +68,11 @@ app.post(
   })
 );
 
-app.get("/register", (req, res) => {
+app.get("/register", checkNotAuthenticated, (req, res) => {
   res.render("register.ejs");
 });
 
-app.post("/register", async (req, res) => {
+app.post("/register", checkNotAuthenticated, async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
     users.push({
@@ -75,5 +86,21 @@ app.post("/register", async (req, res) => {
     res.redirect("/register");
   }
 });
+
+function checkAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect("/login");
+}
+
+function checkNotAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return res.redirect("/");
+  }
+  next();
+}
+
+app.use("/employee", require("./routes/employee"));
 
 app.listen(3000);

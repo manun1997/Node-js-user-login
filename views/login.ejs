@@ -18,36 +18,38 @@
 
 <body>
     <div class="container">
-        <div class="card mx-3 my-4 shadow p-3 mb-5 bg-white rounded" style="width: 20rem;">
-            <div class="card-title text-center text-primary font-weight-bold shadow-lg p-3 mb-5 bg-white rounded">
-                Login
-                Here</div>
-            <img src="../public/img/user.png" class="card-img-top login_card_css" alt="...">
 
-            <div class="card-body">
-                <form action="/login" method="post">
-                    <% if(messages.error) { %>
-                        <%= messages.error %>
-                            <% } %>
-                                <div class="form-group">
-                                    <label for="email" class="font-weight-bold">Email</label>
-                                    <input type="email" class="form-control" name="email">
-                                </div>
+        <div class="top">
+            <div class="card mx-3 my-4 shadow p-3 mb-5 bg-white rounded main_card_css" style="width: 20rem;">
+                <div class="card-title text-center text-primary font-weight-bold shadow-lg p-3 mb-5 bg-white rounded">
+                    Login
+                    Here</div>
+                <img src="../public/img/user.png" class="card-img-top login_card_css" alt="...">
 
-                                <div class="form-group">
-                                    <label for="password" class="font-weight-bold">Password</label>
-                                    <input type="password" class="form-control" name="password">
-                                </div>
-                                <button type="submit" class="btn btn-success">Login</button>
-                                <a role="button" href="/register" class="btn btn-info">Back To register</a>
-                </form>
+                <div class="card-body">
+                    <form action="/login" method="post">
+                        <% if(messages.error) { %>
+                            <%= messages.error %>
+                                <% } %>
+                                    <div class="form-group">
+                                        <label for="email" class="font-weight-bold">Email</label>
+                                        <input type="email" class="form-control" name="email">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="password" class="font-weight-bold">Password</label>
+                                        <input type="password" class="form-control" name="password">
+                                    </div>
+                                    <button type="submit" class="btn btn-success">Login</button>
+                                    <a role="button" href="/register" class="btn btn-info">Back To register</a>
+                    </form>
+                </div>
             </div>
         </div>
-
     </div>
 
 
-    -->
+
 </body>
 
 </html>
