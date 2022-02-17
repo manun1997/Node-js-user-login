@@ -2,6 +2,7 @@ const express = require("express");
 var router = express.Router();
 const con = require("../database");
 const flash = require("express-flash");
+const session = require("express-session");
 
 exports.addemployee = async (req, res) => {
   return res.render("./employee/addemployee", {
@@ -90,29 +91,40 @@ exports.viewemployee = async (req, res) => {
   );
 };
 
+exports.logoutemployee = async (req, res) => {
+  req.logOut();
+  req.session.destroy();
+  res.redirect("/login");
+};
+
 exports.loginemployee = async (req, res) => {
-  return res.render("./employee/login");
+  return res.render("/login", {
+    message: req.flash("message"),
+  });
 };
 
 exports.loginpostemployee = async (req, res) => {
   const email1 = req.body.email;
   const password = req.body.password;
 
+  const data = req.body;
+  console.log(data);
+
   var sql = "SELECT * FROM employww_info WHERE email =? AND password =?";
-  con.query(sql, [email1, password], function (err, data, fields) {
+  con.query(sql, [email1, password], function (err, data1) {
     if (err) throw err;
-    if (data.length > 0) {
+    if (data1.length > 0) {
       req.session.loggedinUser = true;
       req.session.emailAddress = email1;
-      return res.render("/employee/list", {
+      console.log(data1[0]);
+      return res.render("./employee/loginemployee", {
         title: "employee-data",
-        empdata2: email1,
+        logindata: data1[0],
       });
-      res.redirect("/employee/list");
     } else {
-      res.render("./login", {
-        alertMsg: "Your Email Address or password is wrong",
-      });
+      req.flash("message", "Invalid username or Password is word");
+      console.log("False");
+      res.redirect("/login");
     }
   });
 };

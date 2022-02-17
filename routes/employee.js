@@ -16,13 +16,17 @@ app.get("/list", employee.viewemployee, (req, res) => {});
 
 app.get("/edit/:id", employee.editemployee);
 
-app.get("/login", employee.loginemployee);
+app.get("./login", employee.loginemployee);
 
 app.post("/login", employee.loginpostemployee);
+
+app.get("/login", employee.loginemployee);
 
 app.post("/edit/:id", employee.updateemployee);
 app.get("/delete/:id", employee.deleteemployee);
 app.post("/addemployee", employee.saveemployee);
+
+app.get("/logout", employee.logoutemployee);
 
 module.exports = app;
 
